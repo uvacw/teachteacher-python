@@ -30,4 +30,6 @@ A list of additional resources that could be of interest:
 
 - A 5-day workshop by Anne and Damian on Machine Learning in Python (for social scientists with no or minimal previous Python knowledge): https://github.com/annekroon/gesis-ml-learning/
 
-- (Forthcoming on https://cssbook.net and in print with Wiley): Van Atteveldt, W., Trilling, D., Arcila, C. (in press):  Computational Analysis of Communication: A practical introduction to the analysis of texts, networks, and images with code examples in Python and R
+- "The new book" (forthcoming open-access on https://cssbook.net and in print with Wiley): Van Atteveldt, W., Trilling, D., Arcila, C. (in press):  Computational Analysis of Communication: A practical introduction to the analysis of texts, networks, and images with code examples in Python and R
+
+- "The old book" (the book used between 2015 and 2020 in the Big Data courses). Less focus on Pandas than in more modern approaches, slightly outdated coding style in some examples, and less depth than the "new" book. The Twitter API chapter is outdated and sentiment anaysis as described in Chapter 6 should not be tought like this any more. Apart from that, it still can be a good resource to get started and/or to look things up.  Trilling, D. (2020): Doing Computational Social Science with Python: An Introduction. Version 1.3.2. https://github.com/damian0604/bdaca/blob/master/book/bd-aca_book.pdf
