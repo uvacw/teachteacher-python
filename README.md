@@ -22,3 +22,12 @@ As a pilot, we are holding a five-day course in which we combine
 - teaching the necessary Python skills
 - teaching how to teach these skills
 - exercising and reflecting on best teaching practices.
+
+
+## Additional resources
+
+A list of additional resources that could be of interest:
+
+- A 5-day workshop by Anne and Damian on Machine Learning in Python (for social scientists with no or minimal previous Python knowledge): https://github.com/annekroon/gesis-ml-learning/
+
+- (Forthcoming on https://cssbook.net and in print with Wiley): Van Atteveldt, W., Trilling, D., Arcila, C. (in press):  Computational Analysis of Communication: A practical introduction to the analysis of texts, networks, and images with code examples in Python and R
