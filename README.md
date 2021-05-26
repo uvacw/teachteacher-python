@@ -16,6 +16,11 @@ This repository contains materials for colleagues who are new to teaching comput
 | Digital Analytics                                   |                                                      |                 |
 
 
+## Requirements
+
+You need to have a working Python environment and you need to be able to install Python packages on your system. There are several ways of achieving this, and it is important to note that not all of your students may have the same type of environment. In particular, one can either opt for the so-called Anaconda distribution or a native Python installation. There are pro's and con's for both approaches. Currently, students in Data Journalism as well as in  Digital Analytics are advised to install Anaconda; students in Big Data and Automated Content Analysis are explicitly given the choise. Please read the [our Installation Guide](installation.md) for detailed instructions.
+
+
 ## Structure of the ``Teaching the teacher'' course
 
 As a pilot, we are holding a five-day course in which we combine 
