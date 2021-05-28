@@ -36,7 +36,7 @@ it works on your system.
   - Install Python 3.7 (or later) using all of the defaults for
     installation 
 
-  - 
+  -
 #### Linux
 
   - Open [<span class="underline">https://www.anaconda.com/download/</span>](https://www.anaconda.com/download/) with
@@ -106,14 +106,12 @@ OK\!
 
 Oftentimes, you will have Python already installed on your computer.
 There are different ways to check if you already have it. For example,
-if you are using a Mac, you can open your system terminal\[1\] and type
+if you are using a Mac, you can open your system terminal[^1] and type
 python -V or python –version and you will get a message with the version
-that is installed by default on your computer
+that is installed by default on your computer.
 
 If you do not have already Python on your computer, the first thing will
-be to download it
-
-and install it from its official
+be to download it and install it from its official
 [webpage](https://www.python.org/downloads/), selecting the right
 software according to your operating system (Windows, Linux/UNIX, Mac OS
 X). 
@@ -125,9 +123,8 @@ Python to your path, which means that you set the path variable in order
 to call the executable software from your system terminal just by typing
 the word python. We recommend selecting this option.
 
-## 
 
-## Installing Jupyter
+####  Installing Jupyter
 
 In the course, we will run our Python code using Jupyter Notebooks. They
 run as a web application that allows you to create documents that
@@ -143,5 +140,7 @@ You can start Jupter Notebook by typing jupyter notebook in your
 system’s terminal (or in Anaconda prompt if you installed Python via
 Anaconda on a Windows computer).
 
-1.  Not sure what is and how to open Terminal? Have a look at this short
+There is a more fancy and moden environment called JupyterLab -- using JupyterLab instead of plain JupyterNotebooks is fine as well.
+
+[^1] Not sure what is and how to open Terminal? Have a look at this short
     [video](https://www.youtube.com/watch?v=zw7Nd67_aFw).
