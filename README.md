@@ -13,8 +13,9 @@ This repository contains materials for colleagues who are new to teaching comput
 | Computational Communication Science I               |                                                      |                 |
 | Computational Communication Science I               |                                                      |                 |
 | Data Journalism                                     | https://github.com/uvacw/datajournalism              |                 |
-| Digital Analytics                                   |                                                      |                 |
+| Digital Analytics*                                  | https://github.com/uva-cw-digitalanalytics/2021s2    |                 |
 
+* Ask Joanna or Theo for access
 
 ## Requirements
 
