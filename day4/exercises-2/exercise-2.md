@@ -9,7 +9,7 @@ To arrive at a model that will do just that, please consider taking the followin
 
 - **Vectorize the data**: Try to fit different vectorizers to the data. You can use `count` vs. `tfidf` vectorizers, with or without pruning, stopword removal, etc.
 
-- Try out a simple supervised model. Find some inspiration [here](https://github.com/uvacw/teachteacher-python/blob/main/day4/exercises-2/possible-solution-exercise-2.md). Can you predict the `source` using linguistic variations in the articles?
+- Try out a simple supervised model. Find some inspiration [here](https://github.com/uvacw/teachteacher-python/blob/main/day4/exercises-2/possible-solution-exercise-2.md#build-a-simple-classifier). Can you predict the `source` using linguistic variations in the articles?
 
 - Which combination of pre-processing steps + vectorizer gives the best results?
 
