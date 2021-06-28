@@ -1,6 +1,6 @@
 
-###From text to features:
-#### Trying you different preprocessing steps
+### Exercise 2: From text to features:
+### Trying out different preprocessing steps
 
 Load the data...
 
@@ -12,7 +12,7 @@ for filename in infowarsfiles:
         documents.append(f.read())
 ```
 
-Let's inspect the data, and start some pre-processing/ cleaning steps.
+Let's inspect the data, and start some pre-processing/ cleaning steps
 
 ```python
 ## From text to features.
@@ -64,7 +64,7 @@ text[7].collocations(num=10)
 
 ----------
 
-### Vectorize the data and build a simple classifier.
+### Vectorize the data
 
 ```python
 from glob import glob
@@ -108,6 +108,7 @@ X_features_train = myvectorizer.fit_transform(X_train)
 X_features_test = myvectorizer.transform(X_test)
 
 ```
+### Build a simple classifier
 
 Now, lets build a simple classifier and predict outlet based on textual features:
 
