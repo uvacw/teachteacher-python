@@ -1,6 +1,6 @@
 # Day 4: Natural Language Processing
 
-| Time slot     | What                                                                                                                                                                                                    |
+| Time slot     | Content                                                                                                                                                                                                  |
 |---------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 09:30-11:00   | [NLP I](https://github.com/uvacw/teachteacher-python/blob/main/day4/day4.pdf): In a gentle introduction to NLP techniques, we will discuss the basics of bag-of-word (BAG) approaches, such as tokenization, stopword removal, stemming and lemmatization                       |
 | 11:00 - 12:00 | [Exercise 1](https://github.com/uvacw/teachteacher-python/blob/main/day4/exercises-1/exercise-1.md)                                                                                                                                                                                              |
