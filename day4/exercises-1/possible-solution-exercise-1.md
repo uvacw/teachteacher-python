@@ -1,5 +1,4 @@
-# Exercise 2: Working with textual data - possible solutions
-
+## Exercise 2: Working with textual data - possible solutions
 
 ```python
 from glob import glob
@@ -21,15 +20,15 @@ articles =random.sample(infowarsarticles, 10)
 
 ```
 
-# Task 4: Preprocessing data
+### [Task 4](https://github.com/uvacw/teachteacher-python/blob/main/day4/exercises-1/exercise-1.md#4-perform-some-analyses): Preprocessing data
 
-### a. lowercasing articles
+##### a. lowercasing articles
 
 ```python
 articles_lower_cased = [art.lower() for art in articles]
 ```
 
-### b. tokenization
+##### b. tokenization
 
 Basic solution, using the `.str` method `.split()`. Not very sophisticated, though.
 
@@ -44,7 +43,7 @@ from nltk.tokenize import TreebankWordTokenizer
 articles_tokenized = [TreebankWordTokenizer().tokenize(art) for art in articles ]
 ```
 
-### c. removing stopwords
+##### c. removing stopwords
 
 Define your stopwordlist:
 
@@ -94,7 +93,7 @@ print("-----------------")
 print(" ".join(articles_without_stopwords[8])[:100])
 ```
 
-### d. stemming and lemmatization
+##### d. stemming and lemmatization
 
 ```python
 stemmer = SnowballStemmer("english")
@@ -133,7 +132,7 @@ print("-----------------")
 print(" ".join(lemmatized_articles[6])[:100])
 ```
 
-# Task 5: Extract information
+### [Task 5](https://github.com/uvacw/teachteacher-python/blob/main/day4/exercises-1/exercise-1.md#5-extract-information): Extract information
 
 ```Python
 import nltk

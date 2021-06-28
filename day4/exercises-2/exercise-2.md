@@ -5,7 +5,7 @@ Try to take some of the data from the [exercise of this morning](https://github.
 
 To arrive at a model that will do just that, please consider taking the following steps:
 
-- Think about your **pre-processes steps**: what type of features will you feed your algorithm? Do you, for example, want to manually remove stopwords, or include ngrams? You can use the code you've written this morning as a starting point.
+- Think about your **pre-processing steps**: what type of features will you feed your algorithm? Do you, for example, want to manually remove stopwords, or include ngrams? You can use the code you've written this morning as a starting point.
 
 - **Vectorize the data**: Try to fit different vectorizers to the data. You can use `count` vs. `tfidf` vectorizers, with or without pruning, stopword removal, etc.
 
