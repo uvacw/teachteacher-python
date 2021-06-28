@@ -55,7 +55,7 @@
 \usepackage{csquotes}
 \usepackage[style=apa, backend = biber]{biblatex}
 \DeclareLanguageMapping{american}{american-UoN}
-\addbibresource{../../bdaca.bib}
+\addbibresource{../references.bib}
 \renewcommand*{\bibfont}{\tiny}
 
 \usepackage{tikz}
@@ -101,8 +101,7 @@
 
 
 
-
-\title[Big Data and Automated Content Analysis]{\textbf{Teach teacher workshop} \\  » NLP «}
+\title[Big Data and Automated Content Analysis]{\textbf{Teaching the Teacher} \\ Day 4 - Morning » From text to features: Natural Language Processing«}
 \author[Anne Kroon]{Anne Kroon \\ ~ \\ \footnotesize{a.c.kroon@uva.nl \\@annekroon} \\ }
 \date{July 1, 2021}
 \institute[UvA]{Afdeling Communicatiewetenschap \\Universiteit van Amsterdam}
@@ -116,138 +115,135 @@
 	\begin{frame}{Today}
 		\tableofcontents
 	\end{frame}
-	
-	
-	
-\section{Bag-of-words}
 
-\subsection{General idea}
+\section{Bottom-up vs. top-down}
 
-\begin{frame}[fragile]{A text as a collections of word}
+\begin{frame}[standout]
+Automated content analysis can be either \textcolor{red}{bottom-up} (inductive, explorative, pattern recognition, \ldots) or \textcolor{red}{top-down} (deductive, based on a-priori developed rules, \ldots). Or in between.
+\end{frame}
 
-Let us represent a string 
-\begin{lstlisting}
-t = "This this is is is a test test test"
-\end{lstlisting}
-like this:\\
-\begin{lstlisting}
-from collections import Counter
-print(Counter(t.split()))
-\end{lstlisting}
-\begin{lstlistingoutput}
-Counter({'is': 3, 'test': 3, 'This': 1, 'this': 1, 'a': 1})
-\end{lstlistingoutput}
 
-\pause 
-Compared to the original string, this representation
+\begin{frame}{The ACA toolbox}
+\makebox[\columnwidth]{
+\includegraphics[width=\columnwidth,height=\paperheight,keepaspectratio]{../media/boumanstrilling2016}}
+\\
+\cite{Boumans2016}
+\end{frame}
+
+
+\begin{frame}{Bottom-up vs. top-down}
+\begin{block}{Bottom-up}
 \begin{itemize}
-	\item is less repetitive
-	\item preserves word frequencies
-	\item but does \emph{not} preserve word order
-	\item can be interpreted as a vector to calculate with (!!!)
+\item Count most frequently occurring words 
+\item Maybe better: Count combinations of words $\Rightarrow$ Which words co-occur together?
 \end{itemize}
+We \emph{don't} specify what to look for in advance	
+\end{block}
 
-\tiny{\emph{Of course, still a lot of stuff to fine-tune\ldots}  (for example, This/this)}
-\end{frame}
-
-
-
-\begin{frame}{From vector to matrix}
-If we do this for multiple texts, we can arrange the vectors in a table.
-
-t1 = "This this is is is a test test test" \newline
-t2 = "This is an example"
-
-\begin{tabular}{| c|c|c|c|c|c|c|c|}
-	\hline
-	& a & an & example & is & this & This & test \\
-	\hline
-	\emph{t1} & 1 & 0 & 0 & 3 & 1 & 1 & 3 \\
-	\emph{t2} &0 & 1 & 1 & 1 & 0 & 1 & 0 \\
-	\hline
-\end{tabular}
-\end{frame}
-
-
-\question{What can you do with such a matrix? Why would you want to represent a collection of texts in such a way?}
-
-
-\begin{frame}{The cell entries: raw counts versus tf$\cdot$idf scores}
+\onslide<2>{
+\begin{block}{Top-down}
 \begin{itemize}
-	\item In the example, we entered simple counts (the ``term frequency'')
+	\item Count frequencies of pre-defined words
+	\item Maybe better: patterns instead of words
 \end{itemize}
-\end{frame}
-
-\question{But are all terms equally important?}
-
-
-\begin{frame}{The cell entries: raw counts versus tf$\cdot$idf scores}
-	\begin{itemize}
-		\item In the example, we entered simple counts (the ``term frequency'')
-		\item But does a word that occurs in almost all documents contain much information?
-		\item And isn't the presence of a word that occurs in very few documents a pretty strong hint?
-		\item<2-> \textbf{Solution: Weigh by \emph{the number of documents in which the term occurs at least once) (the ``document frequency'')}} 
-	\end{itemize}
-\onslide<3->{
-$\Rightarrow$ we multiply the ``term frequency'' (tf) by the inverse document frequency (idf)
-
-\tiny{(usually with some additional logarithmic transformation and normalization applied, see \url{https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfTransformer.html})}
+We \emph{do} specify what to look for in advance	
+\end{block}
 }
 \end{frame}
 
-\begin{frame}{tf$\cdot$idf}
-\begin{array}{ccc}
-	
-	w_{i, j}=t f_{i, j} \times \log \left(\frac{N}{d f_{i}}\right)  \\ \\
-	
-	t f_{i, j}=\text { number of occurrences of } i \text { in } j \\
-	d f_{i}=\text { number of documents containing } i \\
-	N=\text {total number of documents }
-\end{array}
+
+\begin{frame}[fragile]{A simple bottom-up approach}
+\begin{lstlisting}
+from collections import Counter
+
+texts = ["I really really really love him, I do", "I hate him"]
+
+for t in texts:
+    print(Counter(t.split()).most_common(3))
+\end{lstlisting}
+\begin{lstlistingoutput}
+[('really', 3), ('I', 2), ('love', 1)]
+[('I', 1), ('hate', 1), ('him', 1)]
+\end{lstlistingoutput}
 \end{frame}
 
-\begin{frame}{Is tf$\cdot$idf always better?}
-It depends.
 
-\begin{itemize}
-	\item Ultimately, it's an empirical question which works better ($\rightarrow$ weeks on machine learning)
-	\item In many scenarios,  ``discounting'' too frequent words and ``boosting'' rare words makes a lot of sense (most frequent words in a text can be highly un-informative)
-	\item Beauty of raw tf counts, though: interpretability + describes document in itself, not in relation to other documents
+\begin{frame}[fragile]{A simple top-down approach}
+\begin{lstlisting}
+texts = ["I really really really love him, I do", "I hate him"]
+features = ['really', 'love', 'hate']
+
+for t in texts:
+    print(f"\nAnalyzing '{t}':")
+    for f in features:
+        print(f"{f} occurs {t.count(f)} times")
+\end{lstlisting}
+\begin{lstlistingoutput}
+Analyzing 'I really really really love him, I do':
+really occurs 3 times
+love occurs 1 times
+hate occurs 0 times
+
+Analyzing 'I hate him':
+really occurs 0 times
+love occurs 0 times
+hate occurs 1 times
+
+\end{lstlistingoutput}
+\end{frame}
+
+
+
+\question{When would you use which approach?}
+
+
+\begin{frame}{Some considerations}
+\begin{itemize}[<+->]
+	\item Both can have a place in your workflow (e.g., bottom-up as first exploratory step)
+	\item You have a clear theoretical expectation? Bottom-up makes little sense.
+	\item But in any case: you need to transform your text into something ``countable''.
 \end{itemize}
 \end{frame}
 
 
-%\begin{frame}{Internal representations}
-%\begin{block}{Sparse vs dense matrices}
-%\begin{itemize}
-%	\item $\rightarrow$ tens of thousands of columns (terms), and one row per document
-%	\item Filling all cells is inefficient \emph{and} can make the matrix too large to fit in memory (!!!)
-%	\item Solution: store only non-zero values with their coordinates! (sparse matrix)
-%	\item dense matrix (or dataframes) not advisable, only for toy examples
-%\end{itemize}
-%\end{block}
-%\end{frame}
+
+\subsection{Approaches to working with text}
 
 
-%{\setbeamercolor{background canvas}{bg=black}
-%	\begin{frame}
-%	\makebox[\linewidth]{
-%		\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{../../pictures/sparse_dense.png}}
-%\end{frame}
-%}
+\begin{frame}{The toolbox}
+\begin{block}{Slicing}
+\texttt{mystring[2:5]} to get the characters with indices 2,3,4
+\end{block}
 
-
-
-\section{clean BOW}
-
-\begin{frame}{Room for improvement}
-\begin{description}
-	\item[tokenization] How do we (best) split a sentence into tokens (terms, words)?
-	\item[pruning] How can we remove unneccessary words?
-	\item[lemmatization] How can we make sure that slight variations of the same word are not counted differently?
-
-\end{description}
+\begin{block}{String methods}
+\begin{itemize}
+\item \texttt{.lower()} returns lowercased string
+\item \texttt{.strip()} returns string without whitespace at beginning and end
+\item \texttt{.find("bla")} returns index of position of substring ``bla'' or -1 if not found
+\item \texttt{.replace("a","b")} returns string where "a" is replaced by "b"
+\item \texttt{.count("bla")} counts how often substring ``bla'' occurs
+\end{itemize}
+Use tab completion for more!
+\end{block}
 \end{frame}
+
+
+\section{Natural Language Processing}
+\begin{frame}
+Natural Language Processing
+\end{frame}
+
+\begin{frame}{NLP: What and why?}
+\begin{block}{Preprocessing steps}
+\begin{description}
+		\item [tokenization] How do we (best) split a sentence into tokens (terms, words)?
+		\item [pruning] How can we remove unneccessary words/ punctuation?
+		\item [lemmatization] How can we make sure that slight variations of the same word are not counted differently?
+		\item [parse sentences] How can identify and encode grammatical functions of tokens?
+\end{description}
+\end{block}
+\end{frame}
+
 
 \subsection{Better tokenization}
 
@@ -270,16 +266,16 @@ tokens = [d.split() for d in docs]
 
 
 \begin{frame}[fragile]{OK, good enough, perfect?}
-	\begin{block}{Tokenizers from the NLTK pacakge}
-		\begin{itemize}
-			\item multiple improved tokenizers that can be used instead of .split()
-			\item e.g., Treebank tokenizer:
-			\begin{itemize}
-				\item split standard contractions ("don't")
-				\item deals with punctuation
-			\end{itemize}			
-		\end{itemize}
-	\end{block}
+\begin{block}{Tokenizers from the NLTK pacakge}
+\begin{itemize}
+\item multiple improved tokenizers that can be used instead of .split()
+\item e.g., Treebank tokenizer:
+\begin{itemize}
+	\item split standard contractions ("don't")
+	\item deals with punctuation
+\end{itemize}			
+\end{itemize}
+\end{block}
 \begin{lstlisting}
 from nltk.tokenize import TreebankWordTokenizer
 tokens = [TreebankWordTokenizer().tokenize(d) for d in docs]
@@ -291,64 +287,34 @@ tokens = [TreebankWordTokenizer().tokenize(d) for d in docs]
 \end{frame}
 
 
-\begin{frame}[standout]
-OK, so we can tokenize with a list comprehension (and that's often a good idea!). But what if we want to \emph{directly} get a DTM instead of lists of tokens?
+\subsection{Stopword and punctuation removal}
+
+\begin{frame}
+\textbf{Stopword removal} \\
+\vspace{1cm}
+\onslide<2>{\emph{The logic of the algorithm is very much related to the one of a simple sentiment analysis!}}
 \end{frame}
-
-
-\begin{frame}[fragile]{OK, good enough, perfect?}
-	\begin{block}{scikit-learn's CountVectorizer (default settings)}
-		\begin{itemize}
-			\item applies lowercasing
-			\item deals with punctuation etc. itself
-			\item minimum word length $>1$
-			\item more technically, tokenizes using this regular expression: \texttt{r"(?u)\textbackslash b\textbackslash w\textbackslash w+\textbackslash b"} \footnote{?u = support unicode, \textbackslash b = word boundary}
-		\end{itemize}
-	\end{block}
-\begin{lstlisting}
-from sklearn.feature_extraction.text import CountVectorizer
-cv = CountVectorizer()
-dtm_sparse = cv.fit_transform(docs)
-\end{lstlisting}
-\end{frame}
-
-
-\begin{frame}{OK, good enough, perfect?}
-	\begin{block}{CountVectorizer supports more}
-		\begin{itemize}
-			\item stopword removal
-			\item custom regular expression
-			\item or even using an external tokenizer
-			\item ngrams instead of unigrams
-		\end{itemize}
-	\end{block}
-			\tiny{see \url{https://scikit-learn.org/stable/modules/generated/sklearn.feature\_extraction.text.CountVectorizer.html}}
-
-\pause
-\begin{alertblock}{Best of both worlds}
-\textbf{Use the Count vectorizer with a NLTK-based external tokenizer! (see book)}
-\end{alertblock}
-\end{frame}
-
-
-
-\subsection{Stopword removal}
-
-
 
 \begin{frame}{Stopword removal}
-	\begin{block}{What are stopwords?}
-		\begin{itemize}
-			\item Very frequent words with little inherent meaning
-			\item \texttt{the, a, he, she, \ldots}
-			\item context-dependent: if you are interested in gender, \texttt{he} and \texttt{she} are no stopwords. 
-			\item Many existing lists as basis
-		\end{itemize}
-	\end{block}
+\begin{block}{What are stopwords?}
+\begin{itemize}
+\item Very frequent words with little inherent meaning
+\item \texttt{the, a, he, she, \ldots}
+\item context-dependent: if you are interested in gender, \texttt{he} and \texttt{she} are no stopwords. 
+\item Many existing lists as basis
+\end{itemize}
+\end{block}
 
-When using the CountVectorizer, we can simply provide a stopword list. 
+\end{frame}
 
-But we can also remove stopwords ``by hand'' (next slide):
+\begin{frame}{Stopword removal: What and why?}
+\begin{block}{Why remove stopwords?}
+	\begin{itemize}
+		\item If we want to identify key terms (e.g., by means of a word count), we are not interested in them
+		\item If we want to calculate document similarity, it might be inflated
+		\item If we want to make a word co-occurance graph, irrelevant information will dominate the picture
+	\end{itemize}
+\end{block}
 \end{frame}
 
 \begin{frame}[fragile]{Stopword removal}
@@ -371,59 +337,44 @@ tokens = [tokenize_clean(d, mystopwords) for d in docs]
 \end{lstlistingoutputtiny}
 
 \begin{alertblock}{You can do more!}
-For instance, in line 8, you could add an \texttt{or} statement to also exclude punctuation.
+\tiny{For instance, in line 8, you could add an \texttt{or} statement to also exclude punctuation.}
 \end{alertblock}
 
 \end{frame}
 
 
-%
-%
-%
-%\subsection{Pruning}
-%
-%\begin{frame}{General idea}
-%\begin{itemize}
-%	\item Idea behind both stopword removal and tf$\cdot$idf: too frequent words are uninformative
-%	\item<2-> (possible) downside stopword removal: a priori list, does not take empirical frequencies in dataset into account
-%	\item<3-> (possible) downside tf$\cdot$idf: does not reduce number of features
-%\end{itemize}
-%
-%\onslide<4->{Pruning: remove all features (tokens) that occur in less than X or more than X of the documents}
-%\end{frame}
-
-\begin{frame}[fragile, plain]
-CountVectorizer, only stopword removal
+\begin{frame}[fragile]{Removing punctuation}
 \begin{lstlisting}
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-myvectorizer = CountVectorizer(stop_words=mystopwords)
-\end{lstlisting}
-
-CountVectorizer, better tokenization, stopword removal (pay attention that stopword list uses same tokenization!):
+from nltk.tokenize import RegexpTokenizer
+tokenizer = RegexpTokenizer(r'\w+')
+tokenizer.tokenize("Hi teachers, what's up!")
+\end{lstlisting}  
+\begin{lstlistingoutputtiny}
+['Hi', 'teachers', 'what', 's', 'up']
+\end{lstlistingoutputtiny}
 \begin{lstlisting}
-myvectorizer = CountVectorizer(tokenizer = TreebankWordTokenizer().tokenize, stop_words=mystopwords)
-\end{lstlisting}
-
-Additionally remove words that occur in more than 75\% or less than $n=2$ documents:
-\begin{lstlisting}
-myvectorizer = CountVectorizer(tokenizer = TreebankWordTokenizer().tokenize, stop_words=mystopwords, max_df=.75, min_df=2)
-\end{lstlisting}
-
-All togehter: tf$\cdot$idf, explicit stopword removal, pruning
-\begin{lstlisting}
-myvectorizer = TfidfVectorizer(tokenizer = TreebankWordTokenizer().tokenize, stop_words=mystopwords, max_df=.75, min_df=2)
-\end{lstlisting}
-
+from string import punctuation
+doc = "Today is @Toni's Birthday!!!"
+"".join([w for w in doc if w not in punctuation])
+\end{lstlisting}  
+\begin{lstlistingoutputtiny}
+'Today is Tonis Birthday'
+\end{lstlistingoutputtiny}
 
 \end{frame}
 
 
-\question{What is ``best''? Which (combination of) techniques to use, and how to decide?}
-
-
-
 \subsection{Stemming and lemmatization}
 
+
+\begin{frame}{NLP: What and why?}
+\begin{block}{Why do stemming?}
+	\begin{itemize}
+		\item Because we do not want to distinguish between smoke, smoked, smoking, \ldots
+		\item Typical preprocessing step (like stopword removal)
+	\end{itemize}
+\end{block}
+\end{frame}
 
 \begin{frame}[fragile]{Stemming and lemmatization}
 \begin{itemize}
@@ -448,33 +399,449 @@ lemmatized_tokens = [[token.lemma_  for token in nlp(doc)] for doc in docs]
 
 
 
-\subsection{How further?}
+\begin{frame}[fragile]{Stemming and stopword removal - let's combine them!}
+\begin{lstlisting}
+from nltk.stem.snowball import SnowballStemmer
+from nltk.corpus import stopwords
+stemmer=SnowballStemmer("english")
+mystopwords = stopwords.words("english")
+frase="I am running while generously greeting my neighbors"
+frasenuevo=""
+for palabra in frase.lower().split():
+	if palabra not in mystopwords:
+		frasenuevo=frasenuevo + stemmer.stem(palabra)  + " "
+\end{lstlisting}
+Now, {\tt{print(frasenuevo)}} returns:
+\begin{lstlisting}
+run generous greet neighbor
+\end{lstlisting}
+Perfect!
+\pause
+\small
+Or:
+\begin{lstlisting}
+print(" ".join([stemmer.stem(p) for p in frase.lower().split() if p not in mystopwords]))
+\end{lstlisting}
+
+\end{frame}
+
+%\begin{frame}
+%	In order to use \texttt{nltk.corpus.stopwords}, you have to download that module once. You can do so by typing the following in the Python console and selecting the appropriate package from the menu that pops up: \\ \texttt{import nltk\\nltk.download()}\\NB: Don't download everything, that's several GB.\\}
+%\end{frame}
+
+
+\subsection{ngrams}
+\begin{frame}
+Instead of just looking at single words (unigrams), we can also use adjacent words (bigrams).
+\end{frame}
+
+\begin{frame}[fragile]{ngrams}
+\begin{lstlisting}
+import nltk
+texts = ['This is the first text text text first', 'And another text yeah yeah']
+texts_bigrams = [["_".join(tup) for tup in nltk.ngrams(t.split(),2)] for t in texts]
+print(texts_bigrams)
+\end{lstlisting}
+\texttt{[['This\_is',
+'is\_the',
+'the\_first',
+'first\_text',
+'text\_text',
+'text\_text',
+'text\_first'],
+['And\_another', 'another\_text', 'text\_yeah', 'yeah\_yeah']]
+}
+
+Typically, we would combine both.
+\pause
+\textbf{\textcolor{red}{What do you think? Why is this useful? (and what may be drawbacks?)}}
+\end{frame}
+
+
+\begin{section}{Advanced NLP}
+	
+	\begin{frame}{Process and/or enrich}
+	\begin{block}{Advanced NLP}
+		We did a lot of BOW (and some POS-tagging), but we can get more
+		\begin{itemize}
+			\item Named Entity Recognition (NER) to get names of people, organizations, \ldots
+			\item Dependency Parsing to find out exact relationships
+			$\Rightarrow$ nltk, Stanford, FROG, Spacy
+		\end{itemize}
+	\end{block}
+\end{frame}
+
+
+%{\setbeamercolor{background canvas}{bg=lightgray}
+%	\begin{frame}[plain]
+%	\makebox[\linewidth]{
+%		\includegraphics[width=\paperwidth,height=\paperheight,keepaspectratio]{../../pictures/dependencies_spacy.png}}
+%	PREP: Prepositional modifier \\
+%	NSUBJPASS: Nominal subject (passive) \\
+%	AUXPASS: Auxiliary (passive) \\
+%\end{frame}
+%
+%}
+
+
+\subsection{Parsing sentences}
+\begin{frame}{NLP: What and why?}
+\begin{block}{Why parse sentences?}
+\begin{itemize}
+	\item To find out what grammatical function words have
+	\item and to get closer to the meaning.
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+
+\begin{frame}[fragile]{Parsing a sentence using NLTK}
+Tokenize a sentence, and ``tag'' the tokenized sentence:
+\begin{lstlisting}
+tokens = nltk.word_tokenize(sentence)
+tagged = nltk.pos_tag(tokens)
+print (tagged[0:6])
+\end{lstlisting}
+gives you the following:
+\begin{lstlisting}
+[('At', 'IN'), ('eight', 'CD'), ("o'clock", 'JJ'), ('on', 'IN'),
+('Thursday', 'NNP'), ('morning', 'NN')]
+\end{lstlisting}
+
+\onslide<2->{
+And you could get the word type of "morning" with \texttt{tagged[5][1]}!
+}
+
+\end{frame}
+
+
+\begin{frame}[fragile]{Named Entity Recognition with spacy}
+Terminal:
+
+\begin{lstlisting}
+sudo pip3 install spacy
+sudo python3 -m spacy download nl    # or en, de, fr ....
+\end{lstlisting}
+
+Python:
+
+\begin{lstlisting}
+import spacy
+nlp = spacy.load('nl')
+doc = nlp('Een 38-jarige vrouw uit Zeist en twee mannen moeten 24 maanden de cel in voor de gecoördineerde oplichting van Rabobank-klanten.')
+for ent in doc.ents:
+    print(ent.text,ent.label_)
+\end{lstlisting}
+
+returns:
+
+\begin{lstlisting}
+Zeist LOC
+Rabobank ORG
+\end{lstlisting}  
+
+\end{frame}
+
+
+
+\begin{frame}{More NLP}
+ \url{http://nlp.stanford.edu}
+\url{http://spacy.io}
+\url{http://nltk.org}
+\url{https://www.clips.uantwerpen.be/pattern}
+\end{frame}
+
+\end{frame}
+
 
 \begin{frame}{Main takeaway}
 
 \begin{itemize}
-	\item It matters how you transform your text into numbers (``vectorization'').
-	\item Preprocessing matters, be able to make informed choices.
-	\item Keep this in mind when we will discuss Machine Learning. 
+%	\item It matters how you transform your text into numbers (``vectorization'').
+\item Preprocessing matters, be able to make informed choices.
+\item Keep this in mind when moving to Machine Learning. 
 \end{itemize}
+\end{frame}
 
+
+\section[Regular expressions]{ACA using regular expressions}
+
+\begin{frame}
+Automated content analysis using regular expressions
+\end{frame}
+
+
+\subsection{What is a regexp?}
+\begin{frame}{Regular Expressions: What and why?}
+\begin{block}{What is a regexp?}
 \begin{itemize}
-	\item Once you vectorized your texts, you can do all kinds of calculations (random example: get the cosine similarity between two texts)
+\item<1-> a \emph{very} widespread way to describe patterns in strings
+\item<2-> Think of wildcards like {\tt{*}} or operators like {\tt{OR}}, {\tt{AND}} or {\tt{NOT}} in search strings: a regexp does the same, but is \emph{much} more powerful
+\item<3-> You can use them in many editors (!), in the Terminal, in STATA \ldots and in Python
 \end{itemize}
-
+\end{block}
 \end{frame}
 
-\begin{frame}{More NLP}
+\begin{frame}{An example}
+\begin{block}{Regex example}
+\begin{itemize}
+\item Let's say we wanted to remove everything but words from a tweet
+\item We could do so by calling the \texttt{.replace()} method
+\item We could do this with a regular expression as well: \\
+{\tt{ \lbrack \^{}a-zA-Z\rbrack}} would match anything that is not a letter
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}{Basic regexp elements}
+\begin{block}{Alternatives}
 \begin{description}
-	\item[$n$-grams] Consider using $n$-grams instead of unigrams
-%	\item[collocations]  $n$grams that appear more frequently than expected
-	\item[POS-tagging] grammatical function (``part-of-speach'') of tokens
-	\item[NER] named entity recognition (persons, organizations, locations)
+\item[{\tt{\lbrack TtFf\rbrack}}] matches either T or t or F or f
+\item[{\tt{Twitter|Facebook}}] matches either Twitter or Facebook
+\item[{\tt{.}}] matches any character
 \end{description}
+\end{block}
+\begin{block}{Repetition}<2->
+\begin{description}
+\item[{\tt{*}}] the expression before occurs 0 or more times
+\item[{\tt{+}}] the expression before occurs 1 or more times
+\end{description}
+\end{block}
 \end{frame}
 
-\begin{frame}{More NLP}
-I \textbf{really} recommend looking into spacy (\url{https://spacy.io}) for advanced natural language processing, such as part-of-speech-tagging and named entity recogntion.
+\begin{frame}{regexp quizz}
+\begin{block}{Which words would be matched?}
+\tt
+\begin{enumerate}
+\item<1-> \lbrack Pp\rbrack ython
+\item<2-> \lbrack A-Z\rbrack +
+\item<3-> RT ?:? @\lbrack a-zA-Z0-9\rbrack *
+\end{enumerate}
+\end{block}
+\end{frame}
+
+\begin{frame}{What else is possible?}
+See the table in the book!
+\end{frame}
+
+\subsection{Using a regexp in Python}
+\begin{frame}{How to use regular expressions in Python}
+\begin{block}{The module \texttt{re}*}
+\begin{description}
+\item<1->[{\tt{re.findall("\lbrack Tt\rbrack witter|\lbrack Ff\rbrack acebook",testo)}}] returns a list with all occurances of Twitter or Facebook in the string called {\tt{testo}}
+\item<1->[{\tt{re.findall("\lbrack 0-9\rbrack +\lbrack a-zA-Z\rbrack +",testo)}}] returns a list with all words that start with one or more numbers followed by one or more letters in the string called {\tt{testo}}
+\item<2->[{\tt{re.sub("\lbrack Tt\rbrack witter|\lbrack Ff\rbrack acebook","a social medium",testo)}}] returns a string in which all all occurances of Twitter or Facebook are replaced by "a social medium"
+\end{description}
+\end{block}
+
+\tiny{Use the less-known but more powerful module \texttt{regex} instead to support all dialects used in the book}
+\end{frame}
+
+
+\begin{frame}[fragile]{How to use regular expressions in Python}
+\begin{block}{The module re}
+\begin{description}
+\item<1->[{\tt{re.match(" +(\lbrack 0-9\rbrack +) of (\lbrack 0-9\rbrack +) points",line)}}] returns  \texttt{None} unless it \emph{exactly} matches the string \texttt{line}. If it does, you can access the part between () with the \texttt{.group()} method.
+\end{description}
+\end{block}
+
+Example:
+\begin{lstlisting}
+line="             2 of 25 points"
+result=re.match(" +([0-9]+) of ([0-9]+) points",line)
+if result:
+    print (f"Your points: {}result.group(1)}, Maximum points: {result.group(2)})
+\end{lstlisting}
+Your points: 2 Maximum points: 25
+\end{frame}
+
+
+
+\begin{frame}{Possible applications}
+\begin{block}{Data preprocessing}
+\begin{itemize}
+\item Remove unwanted characters, words, \ldots
+\item Identify \emph{meaningful} bits of text: usernames, headlines, where an article starts, \ldots
+\item filter (distinguish relevant from irrelevant cases)
+\end{itemize}
+\end{block}
+\end{frame}
+
+
+\begin{frame}{Possible applications}
+\begin{block}{Data analysis: Automated coding}
+\begin{itemize}
+\item Actors
+\item Brands
+\item links or other markers that follow a regular pattern
+\item Numbers (!)
+\end{itemize}
+\end{block}
+\end{frame}
+
+\begin{frame}[fragile,plain]{Example 1: Counting actors}
+\begin{lstlisting}
+import re, csv
+from glob import glob
+count1_list=[]
+count2_list=[]
+filename_list = glob("/home/damian/articles/*.txt")
+
+for fn in filename_list:
+with open(fn) as fi:
+artikel = fi.read()
+artikel = artikel.replace('\n',' ')
+
+count1 = len(re.findall('Israel.*(minister|politician.*|[Aa]uthorit)',artikel))
+count2 = len(re.findall('[Pp]alest',artikel))
+
+count1_list.append(count1)
+count2_list.append(count2)
+
+output=zip(filename_list,count1_list, count2_list)
+with open("results.csv", mode='w',encoding="utf-8") as fo:
+writer = csv.writer(fo)
+writer.writerows(output)
+\end{lstlisting}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]{Example 2: Which number has this Lexis Nexis article?}
+\begin{lstlisting}
+All Rights Reserved
+
+2 of 200 DOCUMENTS
+
+De Telegraaf
+
+21 maart 2014 vrijdag
+
+Brussel bereikt akkoord  aanpak probleembanken;
+ECB krijgt meer in melk te brokkelen
+
+SECTION: Finance; Blz. 24
+LENGTH: 660 woorden
+
+BRUSSEL   Europa heeft gisteren op de valreep een akkoord bereikt 
+over een saneringsfonds voor banken. Daarmee staat de laatste
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]{Example 2: Check the number of a lexis nexis article}
+\begin{lstlisting}
+All Rights Reserved
+
+2 of 200 DOCUMENTS
+
+De Telegraaf
+
+21 maart 2014 vrijdag
+
+Brussel bereikt akkoord  aanpak probleembanken;
+ECB krijgt meer in melk te brokkelen
+
+SECTION: Finance; Blz. 24
+LENGTH: 660 woorden
+
+BRUSSEL   Europa heeft gisteren op de valreep een akkoord bereikt 
+over een saneringsfonds voor banken. Daarmee staat de laatste
+\end{lstlisting}
+
+\begin{lstlisting}
+for line in tekst:
+matchObj=re.match(r" +([0-9]+) of ([0-9]+) DOCUMENTS",line)
+if matchObj:
+numberofarticle= int(matchObj.group(1))
+totalnumberofarticles= int(matchObj.group(2))
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}{Practice yourself!}
+Let's take some time to write some regular expressions.
+Write a script that
+\begin{itemize}
+\item extracts URLS form a list of strings
+\item removes everything that is not a letter or number from a list of strings
+\end{itemize}
+(first develop it for a single string, then scale up)
+
+More tips:
+\huge{\url{http://www.pyregex.com/}}
+\end{frame}
+
+
+
+\section{From test to large-scale}
+
+\begin{frame}[fragile]{General approach}
+1. Take a single string and test your idea
+\begin{lstlisting}
+t = "This is a test test test."
+print(t.count("test"))
+\end{lstlisting}
+2a. You'd assume it to return 3. If so, scale it up:
+\begin{lstlisting}
+results = []
+for t in listwithallmytexts:
+    r = t.count("test")
+    print(f"{t} contains the substring {r} times")
+    results.append(r)
+\end{lstlisting}
+
+2b. If you \emph{only} need to get the list of results, a list comprehension is more elegant:
+\begin{lstlisting}
+results = [t.count("test") for t in listwithallmytexts]
+\end{lstlisting}
+
+
+\end{frame}
+
+
+\begin{frame}[fragile]{General approach}
+\Large
+
+\textcolor{red}{Test on a single string, then make a for loop or list comprehension!}
+
+\pause
+
+\normalsize
+
+\begin{alertblock}{Own functions}
+If it gets more complex, you can write your ow= function and then use it in the list comprehension:
+\begin{lstlisting}
+def mycleanup(t):
+    # do sth with string t here, create new string t2
+    return t2
+
+results = [mycleanup(t) for t in allmytexts]
+\end{lstlisting}
+\end{alertblock}
+\end{frame}
+
+
+\begin{frame}[fragile]{Pandas string methods as alternative}
+If you select column with strings from a pandas dataframe, pandas offers a collection of string methods (via \texttt{.str.}) that largely mirror standard Python string methods:
+
+\begin{lstlisting}
+df['newcoloumnwithresults'] = df['columnwithtext'].str.count("bla")
+\end{lstlisting} 
+
+
+\pause
+
+\begin{alertblock}{To pandas or not to pandas for text?}
+Partly a matter of taste. 
+
+Not-too-large dataset with a lot of extra columns? Advanced statistical analysis planned? Sounds like pandas.
+
+It's mainly a lot of text? Wanna do some machine learning later on anyway? It's large and (potentially) messy? Doesn't sound like pandas is a good idea.
+\end{alertblock}
+
 \end{frame}
 
 
