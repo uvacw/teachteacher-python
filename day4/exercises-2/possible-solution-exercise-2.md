@@ -1,5 +1,6 @@
 
-### Exercise 2: From text to features:
+## Exercise 2: From text to features - possible solutions
+
 ### Trying out different preprocessing steps
 
 Load the data...
@@ -127,6 +128,10 @@ print(classification_report(y_test, y_pred))
 ```
 
 Can you improve this classifier when using different vectorizers?
+
+----
+
+
 
 
 *hint: if you want to include n-grams as feature input, add the following argument to your vectorizer:*

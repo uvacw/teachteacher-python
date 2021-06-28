@@ -1,7 +1,5 @@
-# NLP assignment
-Anne Kroon and Damian Trilling
+# Exercise 2: Working with textual data - possible solutions
 
-# A possible solution to the assignment
 
 ```python
 from glob import glob
@@ -75,7 +73,7 @@ Same solution, but with list comprehension:
 articles_without_stopwords = [" ".join([w for w in article.lower().split() if w not in mystopwords]) for article in articles]
 ```
 
-Different--probably more sophisticated--solution using a function.
+Different--probably more sophisticated--solution, by writing a function and calling it in a list comprehension:
 
 ```python
 def remove_stopwords(article, stopwordlist):
@@ -122,14 +120,9 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 lemmatized_articles = [[token.lemma_ for token in nlp(art)] for art in articles]
 ```
-Compare the results to the original articles:
 
-```python
-print(articles[8][:100])
-print("-----------------")
-print(stemmed_text[8][:100])
-```
 
+Again, frequently inspect your code, and for example compare the results to the original articles:
 
 
 ```python

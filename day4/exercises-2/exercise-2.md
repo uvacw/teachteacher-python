@@ -1,18 +1,18 @@
-# Exercise preprocessing and vectorization of text.
+# Exercise 2: From text to features
+----
 
+Try to take some of the data from the [exercise of this morning](https://github.com/uvacw/teachteacher-python/blob/main/day4/exercises-1/exercise-1.md), and prepare this data for a supervised classification task. More specifically, imagine you want to train a classifier that will predict whether articles come from a fake news source (e.g., `Infowars`) or a quality news outlet (e.g., `bbc`). In other words, you want to predict `source` based on linguistic variations in the articles.
 
-Try to take some of the data from the exercise of this morning.
+To arrive at a model that will do just that, please consider taking the following steps:
 
-- preprocess them (in different ways)
+- Think about your **pre-processes steps**: what type of features will you feed your algorithm? Do you, for example, want to manually remove stopwords, or include ngrams? You can use the code you've written this morning as a starting point.
 
-#- give a (tabular and/or graphical) overview of tokens (unigrams, bigrams, collocations)
+- **Vectorize the data**: Try to fit different vectorizers to the data. You can use `count` vs. `tfidf` vectorizers, with or without pruning, stopword removal, etc.
 
+- Try out a simple supervised model. Find some inspiration [here](https://github.com/uvacw/teachteacher-python/blob/main/day4/exercises-2/possible-solution-exercise-2.md). Can you predict the `source` using linguistic variations in the articles?
 
-Then,
+- Which combination of pre-processing steps + vectorizer gives the best results?
 
-- vectorize them
+## BONUS
 
-- try out a simple supervised model: Can you predict source (i.e., outlet of the news articles) using textual features? Define different vectorizers for this task (`count` vs. `tfidf`)
-
-
-- compare that bottom-up approach with a top-down (keyword or regular-expression based) approach
+- Compare that bottom-up approach with a top-down (keyword or regular-expression based) approach.

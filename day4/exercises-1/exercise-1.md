@@ -39,7 +39,7 @@ for filename in infowarsfiles:
 ```
 
 - Can you explain what the `glob` function does?
-- What does `infowarsfiles` contain, and what doets `infowarsarticles` contain? First make an educated guess based on the code snippet, then check it! Do *not* print the whole thing, but use `len`, `type` en slicing `[:10]` to get the info you need.
+- What does `infowarsfiles` contain, and what does `infowarsarticles` contain? First make an educated guess based on the code snippet, then check it! Do *not* print the whole thing, but use `len`, `type` en slicing `[:10]` to get the info ou need.
 
 - Tip: take a random sample of the articles for practice purposes (if your code works, you can scale up!)
 
@@ -55,12 +55,16 @@ articles =random.sample(infowarsarticles, 10)
 Techniques you can try out include:
 
 a.  lowercasing
+
 b.  tokenization
+
 c.  stopword removal
+
 d.  stemming and/or lemmatizing)
 
 
-To use tokenization and stemming `spacy`, you need to install `spacy` and the language model. Run the following in the your terminal environment:
+
+If you want to tokenize and stem your data using `spacy`, you need to install `spacy` and the language model. Run the following in the your terminal environment:
 
 ```bash
 pip3 install spacy
