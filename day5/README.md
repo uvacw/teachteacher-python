@@ -1,6 +1,16 @@
 # Day 5: Building and testing models
 
-Preliminary agenda:
+Key topics:
+* What is machine learning?
+* Statistical testing vs. (?) Machine learning
+* Unsupervised machine learning examples: with numbers, and with text
+* Going deeper into supervised machine learning
+	* Building models
+	* Evaluating models
+	* Explaining models
+
+
+Agenda:
 
 | Time          | Topic                                                                         |
 |---------------|-------------------------------------------------------------------------------|
