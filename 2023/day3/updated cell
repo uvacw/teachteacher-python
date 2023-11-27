@@ -1,0 +1,20 @@
+import pandas as pd
+
+info = {
+    'id':[],
+    'views':[]
+}
+
+for item in lotr_videos_ids['items']:
+    vidId = item['id']['videoId']
+    r = youtube.videos().list(
+        part="statistics,snippet",
+        id=vidId,
+        fields="items(statistics)"
+    ).execute()
+
+    views = r['items'][0]['statistics']['viewCount']
+    info['id'].append(vidId)
+    info['views'].append(views)
+
+df = pd.DataFrame(data=info)
