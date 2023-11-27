@@ -18,3 +18,12 @@ for item in lotr_videos_ids['items']:
     info['views'].append(views)
 
 df = pd.DataFrame(data=info)
+
+
+
+
+all_mail = []
+
+for email in emails[0:6]:
+    new_mail = email['href'].replace('mailto:','')
+    all_mail.append(new_mail)
