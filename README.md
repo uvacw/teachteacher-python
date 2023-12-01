@@ -6,14 +6,14 @@
 This repository contains materials for colleagues who are new to teaching computational methods but want to do so in the future. In particular, this holds true for the following courses, but the tips and resources also apply to future yet-to-be-developed courses:
 
 
-| Course name                                         | Resource link 1                                      | Resource link 2 |
-|-----------------------------------------------------|------------------------------------------------------|-----------------|
-| Big Data and Automated Content Analysis (6EC)       | https://github.com/annekroon/bdaca-6ec/              |                 |
-| Big Data and Automated Content Analysis I+II (12EC) | https://github.com/damian0604/bdaca/tree/master/12ec |                 |
-| Computational Communication Science I               |                                                      |                 |
-| Computational Communication Science I               |                                                      |                 |
-| Data Journalism                                     | https://github.com/uvacw/datajournalism              |                 |
-| Digital Analytics*                                  | https://github.com/uva-cw-digitalanalytics/2021s2    |                 |
+| Course name                                         | Resource link 1                                      | 
+|-----------------------------------------------------|------------------------------------------------------|
+| Gesis Course Introduction to Machine Learning       | https://github.com/annekroon/gesis-machine-learning  |                 
+| Big Data and Automated Content Analysis             | https://github.com/uvacw/teaching-bdaca              |                 
+| Computational Communication Science I               | https://github.com/uva-cw-ccs1/2223s2/               |                 
+| Computational Communication Science II              | https://github.com/uva-cw-ccs2/2223s2/               |                 
+| Data Journalism                                     | https://github.com/uvacw/datajournalism              |                 
+| Digital Analytics*                                  | https://github.com/uva-cw-digitalanalytics/2021s2    |              
 
 *Ask Joanna or Theo for access
 
